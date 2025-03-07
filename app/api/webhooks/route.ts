@@ -1,14 +1,13 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
-  console.log("[SIGNING_SECRET]", SIGNING_SECRET);
+
   if (!SIGNING_SECRET) {
     throw new Error(
-      "Error: Please add SIGNING_SECRET from Clerk Dashboard to .env or .env.local"
+      "Error: Please add SIGNING_SECRET from Clerk Dashboard to .env or .env"
     );
   }
 
@@ -20,9 +19,6 @@ export async function POST(req: Request) {
   const svix_id = headerPayload.get("svix-id");
   const svix_timestamp = headerPayload.get("svix-timestamp");
   const svix_signature = headerPayload.get("svix-signature");
-  console.log("[svix_id]", svix_id);
-  console.log("[svix_timestamp]", svix_timestamp);
-  console.log("[svix_signature]", svix_signature);
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
@@ -34,9 +30,9 @@ export async function POST(req: Request) {
   // Get body
   const payload = await req.json();
   const body = JSON.stringify(payload);
-  console.log("[BODY]", body);
 
   let evt: WebhookEvent;
+
   // Verify payload with headers
   try {
     evt = wh.verify(body, {
@@ -44,7 +40,6 @@ export async function POST(req: Request) {
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
     }) as WebhookEvent;
-    console.log("[EVENT_AFTER_WEBHOOK_VERIFICATION]", evt);
   } catch (err) {
     console.error("Error: Could not verify webhook:", err);
     return new Response("Error: Verification error", {
@@ -52,30 +47,12 @@ export async function POST(req: Request) {
     });
   }
 
+  // Do something with payload
+  // For this guide, log payload to console
+  const { id } = evt.data;
   const eventType = evt.type;
-  // store the data in the Database.
-  if (eventType === "user.created") {
-    try {
-      const userExists = await prisma.user.findFirst({
-        where: {
-          email: payload.data.email_addresses[0].email_address,
-        },
-      });
-      if (!userExists) {
-        await prisma.user.create({
-          data: {
-            email: payload.data.email_addresses[0].email_address,
-            name: payload.data.first_name + " " + payload.data.last_name,
-            profilePic: payload.data.image_url,
-            clerkId: payload.id,
-          },
-        });
-      }
-    } catch (error) {
-      console.log("[ERROR_IN_STORING_USER_INFO_IN_DB]", error);
-      throw error;
-    }
-  }
+  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
+  console.log("Webhook payload:", body);
 
-  return new Response("OK", { status: 200 });
+  return new Response("Webhook received", { status: 200 });
 }
