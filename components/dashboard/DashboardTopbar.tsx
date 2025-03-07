@@ -1,13 +1,6 @@
 import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import {
-  LayoutList,
-  ListChecks,
-  ListTodo,
-  Menu,
-  Settings,
-  UsersRound,
-} from "lucide-react";
+import { LayoutList, ListTodo, Menu, Settings, UsersRound } from "lucide-react";
 import Sidebar from "../Sidebar";
 
 const DashboardTopbar = ({ title }: { title: string }) => {
