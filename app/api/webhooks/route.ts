@@ -53,26 +53,28 @@ export async function POST(req: Request) {
   const { id } = evt.data;
   const eventType = evt.type;
   // store data in the database
-  try {
-    const userExists = await prisma.user.findFirst({
-      where: {
-        email: payload.user.email_addresses[0].email_address,
-      },
-    });
-    if (!userExists) {
-      const newUser = await prisma.user.create({
-        data: {
+  if (eventType === "user.created") {
+    try {
+      const userExists = await prisma.user.findFirst({
+        where: {
           email: payload.data.email_addresses[0].email_address,
-          clerkId: payload.data.id,
-          name: payload.data.first_name + " " + payload.data.last_name,
-          profilePic: payload.data.image_url,
         },
       });
-      console.log("NEW USER", newUser);
+      if (!userExists) {
+        const newUser = await prisma.user.create({
+          data: {
+            email: payload.data.email_addresses[0].email_address,
+            clerkId: payload.data.id,
+            name: payload.data.first_name + " " + payload.data.last_name,
+            profilePic: payload.data.image_url,
+          },
+        });
+        console.log("NEW USER", newUser);
+      }
+    } catch (error) {
+      console.log("Error storing data in the database:", error);
+      throw error;
     }
-  } catch (error) {
-    console.log("Error storing data in the database:", error);
-    throw error;
   }
 
   console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
