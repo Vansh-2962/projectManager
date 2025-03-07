@@ -34,15 +34,17 @@ export async function POST(req: Request) {
   // Get body
   const payload = await req.json();
   const body = JSON.stringify(payload);
+  console.log("[BODY]", body);
 
   let evt: WebhookEvent;
   // Verify payload with headers
   try {
-    evt = (await wh.verify(body, {
+    evt = wh.verify(body, {
       "svix-id": svix_id,
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
-    })) as WebhookEvent;
+    }) as WebhookEvent;
+    console.log("[EVENT_AFTER_WEBHOOK_VERIFICATION]", evt);
   } catch (err) {
     console.error("Error: Could not verify webhook:", err);
     return new Response("Error: Verification error", {

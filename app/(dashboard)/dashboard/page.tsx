@@ -1,38 +1,17 @@
 "use client";
-import {
-  LayoutDashboard,
-  LayoutList,
-  ListChecks,
-  ListTodo,
-  Menu,
-} from "lucide-react";
+import { LayoutList, ListChecks, ListTodo } from "lucide-react";
 import React from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import Sidebar from "@/components/Sidebar";
+
 import HeadingComp from "@/components/dashboard/heading";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import DashboardTopbar from "@/components/dashboard/DashboardTopbar";
 
 const DashboardPage = () => {
   return (
     <main>
       {/* dashboard topbar */}
-      <nav className="flex items-center justify-between p-2 border-b">
-        <div className="flex items-center gap-2">
-          <LayoutDashboard className="w-4 h-4" />
-          <span className="text-sm">Dashboard</span>
-        </div>
-
-        {/* sidebar mobile view */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <Menu className="w-4 h-4 md:hidden block" />
-          </SheetTrigger>
-          <SheetContent className="w-[230px]">
-            <Sidebar />
-          </SheetContent>
-        </Sheet>
-      </nav>
+      <DashboardTopbar title={"Dashboard"} />
 
       {/* dashboard content */}
       <section className="p-4">
@@ -58,7 +37,7 @@ const DashboardPage = () => {
             transition={{
               duration: 0.5,
               ease: "easeInOut",
-              delay: 0.3, 
+              delay: 0.3,
             }}
             className="border hover:scale-105 transition-all ease-in-out 0.5s shadow-md rounded-lg p-3 px-5 md:w-1/2 py-5"
           >
@@ -94,7 +73,7 @@ const DashboardPage = () => {
             transition={{
               duration: 0.5,
               ease: "easeInOut",
-              delay: 0.9, 
+              delay: 0.9,
             }}
             className="border hover:scale-105 transition-all ease-in-out 0.5s shadow-md rounded-lg p-3 px-5 md:w-1/2 py-5"
           >

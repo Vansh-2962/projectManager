@@ -80,39 +80,39 @@ const Sidebar = () => {
               <div
                 className={` 
                 ${
-                  pathname === "/tasks" &&
+                  pathname === "/dashboard/tasks" &&
                   "bg-accent-foreground text-zinc-200 hover:text-zinc-300 hover:bg-zinc-900"
                 }
                 flex items-center gap-2 hover:bg-zinc-200 py-1 px-2 rounded-lg cursor-pointer`}
               >
                 <ListTodo className="w-4 h-4" />
-                <Link href={"/tasks"} className="text-sm">
+                <Link href={"/dashboard/tasks"} className="text-sm">
                   Tasks
                 </Link>
               </div>
               <div
                 className={` 
                 ${
-                  pathname === "/members" &&
+                  pathname === "/dashboard/members" &&
                   "bg-accent-foreground text-zinc-200 hover:text-zinc-300 hover:bg-zinc-900"
                 }
                 flex items-center gap-2 hover:bg-zinc-200 py-1 px-2 rounded-lg cursor-pointer`}
               >
                 <UsersRound className="w-4 h-4" />
-                <Link href={"/members"} className="text-sm">
+                <Link href={"/dashboard/members"} className="text-sm">
                   Members
                 </Link>
               </div>
               <div
                 className={` 
                 ${
-                  pathname === "/settings" &&
+                  pathname === "/dashboard/settings" &&
                   "bg-accent-foreground text-zinc-200 hover:text-zinc-300 hover:bg-zinc-900"
                 }
                 flex items-center gap-2 hover:bg-zinc-200 py-1 px-2 rounded-lg cursor-pointer`}
               >
                 <Settings className="w-4 h-4" />
-                <Link href={"/settings"} className="text-sm">
+                <Link href={"/dashboard/settings"} className="text-sm">
                   Settings
                 </Link>
               </div>
