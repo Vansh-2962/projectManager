@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 const font = Spinnaker({
   weight: "400",
   style: "normal",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
